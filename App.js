@@ -1,21 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+'use strict';
+import React, {Component} from 'react';
+import { Platform,StyleSheet, Text, View } from 'react-native';
 
-export default class App extends React.Component {
+
+
+type Props = {};
+export default class App extends Component<Props> {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
+    return <Text style={styles.description}>Search for houses to buy!</Text>;
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  description: {
+    fontSize:18,
+    textAlign:'center',
+    color:'#656565',
+    marginTop:65,
+  }
 });
