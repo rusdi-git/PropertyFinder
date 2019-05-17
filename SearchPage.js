@@ -16,7 +16,8 @@ function urlForQueryAndPage(key,value,pageNumber){
         country:'uk',
         pretty:'1',
         encoding:'json',
-        listing_type:'search_listings',
+        listing_type:'buy',
+        action:'search_listings',
         page:pageNumber,
     };
     data[key]=value;
@@ -38,19 +39,34 @@ export default class SearchPage extends Component<Props> {
         this.state={
             searchString:'london',
             isLoading:false,
+            message:'',
         };
     }
 
     _onSearchTextChanged = (event)=>{
-        console.log('_onSearchTextChanged');
         this.setState({searchString:event.nativeEvent.text});
-        console.log('Current'+this.state.searchString+', Next:'+
-        event.nativeEvent.text);
     };
 
     _executeQuery = (query)=>{
         console.log(query);
         this.setState({isLoading:true});
+        fetch(query)
+            .then(response=>response.json())
+            .then(json=>this._handleResponse(json.response))
+            .catch(error=>
+                this.setState({
+                    isLoading:false,
+                    message:'Something bad happened'+error
+                }));
+    };
+
+    _handleResponse = (response)=>{
+        this.setState({isLoading:false,message:''});
+        if(response.application_response_code.substr(0,1)==='1'){
+            this.props.navigation.navigate('Results',{listings:response.listings});
+        } else {
+            this.setState({message:'Location not recognized: please try again'});
+        }
     };
 
     _onSearchPressed = ()=>{
@@ -84,6 +100,7 @@ export default class SearchPage extends Component<Props> {
                 </View>
                 <Image source={require('./Resources/house.png')} style={styles.image}/>
                 {spinner}
+                <Text style={styles.description}>{this.state.message}</Text>
             </View>
         )
     }
