@@ -12,7 +12,7 @@ import {
 
 class ListItem extends React.PureComponent {
     _onPress = ()=>{
-        this.props.onPressItem(this.props.index);
+        this.props.onPressItem(this.props.item);
     }
 
     render() {
@@ -55,8 +55,8 @@ export default class SearchResults extends Component<Props>{
     );
         
 
-    _onPressItem = (index) => {
-        console.log('Pressed row :'+index)
+    _onPressItem = (item) => {
+        this.props.navigation.navigate('Detail',{data:item});
     };
 
     render(){
